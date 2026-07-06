@@ -1,1 +1,395 @@
-I
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareSync - Public Health Surveillance & Epidemic Alert System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .pulse-animation { animation: pulse 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .4; } }
+        /* Salon da zai tabbatar hotuna sun fito 100% ba tare da an yanke su ba */
+        .full-contain-img {
+            object-fit: contain !important;
+            background-color: #f8fafc; /* bg-slate-50 */
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+    <header class="bg-emerald-900 text-white shadow-md sticky top-0 z-40">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <svg class="w-8 h-8 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                </svg>
+                <span class="text-2xl font-bold tracking-tight">CareSync</span>
+            </div>
+            <nav class="hidden md:flex space-x-6 text-sm font-medium">
+                <a href="index.html" class="text-emerald-300 border-b-2 border-emerald-400 pb-1">Report</a>
+                <a href="admin.html" class="hover:text-emerald-200 transition">Admin Dashboard</a>
+                <a href="response.html" class="hover:text-emerald-200 transition">Response Team</a>
+                <a href="gate_kiosk.html" class="hover:text-emerald-200 transition">Hospital Kiosk</a>
+            </nav>
+            <div class="flex items-center space-x-2 bg-emerald-800 px-3 py-1.5 rounded-full text-xs font-semibold">
+                <span class="w-2 h-2 bg-green-400 rounded-full pulse-animation"></span>
+                <span>Nigeria Node Active</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow container mx-auto px-4 py-8 max-w-7xl">
+        <!-- Hero Section -->
+        <section class="bg-gradient-to-br from-emerald-800 to-teal-950 text-white rounded-3xl p-6 md:p-10 shadow-xl mb-10 relative overflow-hidden">
+            <div class="absolute inset-0 opacity-10 pointer-events-none">
+                <svg width="100%" height="100%">
+                    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" stroke-width="1"/>
+                    </pattern>
+                    <rect width="100%" height="100%" fill="url(#grid)" />
+                </svg>
+            </div>
+            <div class="relative z-10 grid grid-cols-1 lg:grid-cols-5 gap-8 items-center">
+                <div class="lg:col-span-3">
+                    <span class="bg-emerald-700 text-emerald-300 text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full">Federal Republic of Nigeria</span>
+                    <h1 class="text-3xl md:text-5xl font-black mt-4 leading-tight">Empowering Communities, Halting Outbreaks</h1>
+                    <p class="mt-4 text-emerald-100 text-sm md:text-base leading-relaxed">
+                        CareSync is a localized, offline-first digital infrastructure allowing community leaders, traditional rulers, and local health workers to report suspicious disease patterns instantly. Report in English, Hausa, Yoruba, Pidgin, or Igbo—our intelligent engine bridges the language gap directly to disease control centers.
+                    </p>
+                    <div class="mt-6">
+                        <a href="#reporting-section" class="bg-white text-emerald-950 px-6 py-3 rounded-xl font-bold text-sm shadow-md hover:bg-emerald-50 transition inline-flex items-center space-x-2">
+                            <i class="fa-solid fa-file-waveform"></i>
+                            <span>Launch Report Form</span>
+                        </a>
+                    </div>
+                </div>
+                <!-- Hotuna 4 na Farko a Gefe (100% Containment) -->
+                <div class="lg:col-span-2 hidden lg:grid grid-cols-2 gap-4">
+                    <div class="w-full h-40 bg-white rounded-2xl p-1 shadow-md border border-emerald-700/30 flex items-center justify-center">
+                        <img src="https://i.imgur.com/D9mtb4h.jpeg" alt="CareSync Media 1" class="w-full h-full full-contain-img rounded-xl">
+                    </div>
+                    <div class="w-full h-40 bg-white rounded-2xl p-1 shadow-md border border-emerald-700/30 flex items-center justify-center">
+                        <img src="https://i.imgur.com/ir81fjx.jpeg" alt="CareSync Media 2" class="w-full h-full full-contain-img rounded-xl">
+                    </div>
+                    <div class="w-full h-40 bg-white rounded-2xl p-1 shadow-md border border-emerald-700/30 flex items-center justify-center">
+                        <img src="https://i.imgur.com/DjFaIKD.jpeg" alt="CareSync Media 3" class="w-full h-full full-contain-img rounded-xl">
+                    </div>
+                    <div class="w-full h-40 bg-white rounded-2xl p-1 shadow-md border border-emerald-700/30 flex items-center justify-center">
+                        <img src="https://i.imgur.com/dww2bz2.jpeg" alt="CareSync Media 4" class="w-full h-full full-contain-img rounded-xl">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8" id="reporting-section">
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-100">
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-6">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center text-emerald-700">
+                                <i class="fa-solid fa-notes-medical text-lg"></i>
+                            </div>
+                            <div>
+                                <h2 class="text-xl font-bold text-slate-900">Epidemic Outbreak Reporting Form</h2>
+                                <p class="text-xs text-slate-500">Multilingual text inputs accepted. AI will process in native formats.</p>
+                            </div>
+                        </div>
+                        <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-md">LGA Mode</span>
+                    </div>
+
+                    <form id="careSyncMainForm" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Reporter Name / Title</label>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+                                        <i class="fa-solid fa-id-badge"></i>
+                                    </span>
+                                    <input type="text" id="reporterName" required class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white text-sm transition" placeholder="e.g., Malam Ibrahim (Community Head)">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Active Contact Number</label>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+                                        <i class="fa-solid fa-phone-volume"></i>
+                                    </span>
+                                    <input type="tel" id="reporterPhone" required class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white text-sm transition" placeholder="e.g., +234 803 000 0000">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Primary Observed Syndrome</label>
+                                <select id="syndromeType" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white text-sm transition">
+                                    <option value="">Select the closest match</option>
+                                    <option value="Severe Diarrhea & Vomiting">Severe Diarrhea & Vomiting (Amai da Gudawa)</option>
+                                    <option value="Acute Fever with Rashes">Acute Fever with Skin Rashes (Zazzabi da Kuraje)</option>
+                                    <option value="Respiratory Distress Outbreak">Sudden Respiratory Illness Outbreak</option>
+                                    <option value="Unexplained Hemorrhagic Signs">Unexplained Fever with Bleeding Signs</option>
+                                    <option value="Novel Cluster Symptoms">New/Unknown Cluster Illness</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Estimated Cluster Count (Affected People)</label>
+                                <select id="clusterCount" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white text-sm transition">
+                                    <option value="">Select threshold</option>
+                                    <option value="Under 5 individuals">Less than 5 people</option>
+                                    <option value="Over 5 individuals">More than 5 people (Epidemic Concern)</option>
+                                    <option value="Over 10 individuals">More than 10 people (High Emergency)</option>
+                                    <option value="Over 25 individuals">Critical Cluster Outbreak</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Detailed Symptom & Outbreak Log (Write in your native language)</label>
+                            <textarea id="symptomDetails" rows="4" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white text-sm transition" placeholder="Example: Mutane fiye da biyar a unguwarmu suna zazzabi mai zafi tare da kuraje a jikinsu cikin kwana biyu da suka gabata..."></textarea>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="border border-dashed border-slate-200 p-4 rounded-xl bg-slate-50 flex flex-col items-center justify-center text-center">
+                                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2 self-start">Visual Documentation</label>
+                                <i class="fa-solid fa-cloud-arrow-up text-2xl text-slate-400 mb-2"></i>
+                                <span class="text-xs text-slate-500 mb-2" id="uploadStatus">Upload clinical images or environment photos</span>
+                                <input type="file" id="mediaInput" accept="image/*,video/*" class="text-xs text-slate-600 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 cursor-pointer">
+                            </div>
+                            <div class="border border-dashed border-slate-200 p-4 rounded-xl bg-slate-50 flex flex-col items-center justify-center text-center">
+                                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2 self-start">Voice Report Simulation</label>
+                                <button type="button" id="voiceBtn" class="w-12 h-12 bg-red-50 hover:bg-red-100 text-red-600 rounded-full flex items-center justify-center transition mb-2">
+                                    <i class="fa-solid fa-microphone text-lg" id="voiceIcon"></i>
+                                </button>
+                                <span class="text-xs font-medium text-slate-600" id="voiceStatusText">Press to record verbal audio transmission</span>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-4 rounded-xl shadow-md transition flex items-center justify-center space-x-2 text-base">
+                            <i class="fa-solid fa-shield-virus"></i>
+                            <span>Commit Secure Outbreak Report</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="space-y-8">
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center text-amber-700">
+                            <i class="fa-solid fa-bullhorn"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-base">NCDC Broadcast Channel</h3>
+                    </div>
+                    <div id="alertContainer" class="space-y-3">
+                        <div class="p-4 bg-amber-50 rounded-xl border border-amber-100 text-xs text-amber-900">
+                            <div class="flex items-center space-x-2 font-bold mb-1">
+                                <span class="w-2 h-2 bg-amber-500 rounded-full"></span>
+                                <span>LGA Surveillance Warning</span>
+                            </div>
+                            Suspected Cholera clusters logged in surrounding wards. Boil all local drinking water sources thoroughly.
+                            <button onclick="simulateSystemPushAlert()" class="mt-3 block text-center w-full bg-white hover:bg-amber-100 text-amber-800 font-bold py-1.5 px-3 rounded-lg border border-amber-200 transition">
+                                Enable Desktop Notifications
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-br from-slate-900 to-slate-800 text-white rounded-2xl p-6 shadow-sm relative overflow-hidden">
+                    <h3 class="font-bold text-base mb-4 flex items-center space-x-2">
+                        <i class="fa-solid fa-database text-emerald-400"></i>
+                        <span>Offline Storage Health Engine</span>
+                    </h3>
+                    <p class="text-xs text-slate-300 leading-relaxed mb-4">
+                        All report workflows embed structural geolocation metrics right inside the browser container storage layer. This ensures flawless operability during prolonged remote grid power or network blackouts across Nigeria.
+                    </p>
+                    <div class="border-t border-slate-700 pt-4 flex justify-between text-xs text-slate-400">
+                        <span>Queued Incident Records:</span>
+                        <span id="queueCounter" class="font-bold text-emerald-400 text-sm">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sabon Sashe Na Hotuna Sauran (Clinical & Surveillance Gallery) -->
+        <section class="mt-12 bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+            <h3 class="text-lg font-bold text-slate-900 mb-4 flex items-center space-x-2">
+                <i class="fa-solid fa-images text-emerald-700"></i>
+                <span>Field Surveillance & Clinical Documentation Gallery</span>
+            </h3>
+            <p class="text-xs text-slate-500 mb-6">Duk wadannan hotunan suna fitowa 100% fadi da tsawo ba tare da an yanke gefenta ba.</p>
+            
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4">
+                <div class="bg-slate-50 p-1.5 border border-slate-200 rounded-xl h-36 flex items-center justify-center shadow-xs">
+                    <img src="https://i.imgur.com/rOaCrna.jpeg" alt="Gallery Image 5" class="w-full h-full full-contain-img rounded-lg">
+                </div>
+                <div class="bg-slate-50 p-1.5 border border-slate-200 rounded-xl h-36 flex items-center justify-center shadow-xs">
+                    <img src="https://i.imgur.com/9MghwgL.jpeg" alt="Gallery Image 6" class="w-full h-full full-contain-img rounded-lg">
+                </div>
+                <div class="bg-slate-50 p-1.5 border border-slate-200 rounded-xl h-36 flex items-center justify-center shadow-xs">
+                    <img src="https://i.imgur.com/dP8yFHF.jpeg" alt="Gallery Image 7" class="w-full h-full full-contain-img rounded-lg">
+                </div>
+                <div class="bg-slate-50 p-1.5 border border-slate-200 rounded-xl h-36 flex items-center justify-center shadow-xs">
+                    <img src="https://i.imgur.com/ve7SBe9.jpeg" alt="Gallery Image 8" class="w-full h-full full-contain-img rounded-lg">
+                </div>
+                <div class="bg-slate-50 p-1.5 border border-slate-200 rounded-xl h-36 flex items-center justify-center shadow-xs">
+                    <img src="https://i.imgur.com/Vs0LUQh.jpeg" alt="Gallery Image 9" class="w-full h-full full-contain-img rounded-lg">
+                </div>
+                <div class="bg-slate-50 p-1.5 border border-slate-200 rounded-xl h-36 flex items-center justify-center shadow-xs">
+                    <img src="https://i.imgur.com/9WQuyCQ.jpeg" alt="Gallery Image 10" class="w-full h-full full-contain-img rounded-lg">
+                </div>
+                <div class="bg-slate-50 p-1.5 border border-slate-200 rounded-xl h-36 flex items-center justify-center shadow-xs">
+                    <img src="https://i.imgur.com/azmvaZe.jpeg" alt="Gallery Image 11" class="w-full h-full full-contain-img rounded-lg">
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="submissionModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-6 md:p-8 max-w-sm w-full text-center shadow-2xl border border-slate-100 transform scale-95 transition-all">
+            <div class="w-16 h-16 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 mb-2">Report Cached Offline!</h3>
+            <p class="text-xs text-slate-600 leading-relaxed mb-6">
+                Your outbreak log along with device spatial GPS coordinate logs has been committed to the local storage matrix. The data will cascade seamlessly into the Disease Control terminal upon cellular handshake detection.
+            </p>
+            <button id="modalDismissBtn" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-3 rounded-xl shadow-md transition text-sm">
+                Acknowledge Pipeline
+            </button>
+        </div>
+    </div>
+
+    <a href="tel:080000CARESYNC" class="fixed bottom-6 right-6 w-14 h-14 bg-red-600 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-red-700 transition-all transform hover:scale-105 z-50 group">
+        <i class="fa-solid fa-phone-flip text-xl group-hover:animate-bounce"></i>
+        <span class="absolute right-16 bg-red-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition whitespace-nowrap shadow-md">Immediate Response Link</span>
+    </a>
+
+    <footer class="bg-slate-900 text-slate-400 text-xs py-6 mt-12 border-t border-slate-800">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2026 CareSync Platform. 3MTT Knowledge Showcase Challenge - Ubaida Aliyu Project Node.</p>
+        </div>
+    </footer>
+</body>
+</html>
+
+    <script>
+        let voiceRecordingState = false;
+        let voiceDumpBase64 = "";
+        let visualDumpBase64 = "";
+
+        document.getElementById('voiceBtn').addEventListener('click', function() {
+            const label = document.getElementById('voiceStatusText');
+            const icon = document.getElementById('voiceIcon');
+            const button = document.getElementById('voiceBtn');
+
+            if (!voiceRecordingState) {
+                voiceRecordingState = true;
+                button.classList.remove('bg-red-50', 'text-red-600');
+                button.classList.add('bg-red-600', 'text-white', 'pulse-animation');
+                label.innerText = "Streaming input from local microphone node... Click again to lock segment";
+                voiceDumpBase64 = "data:audio/mp3;base64,U2FtcGxlQXVkaW9GaWxlQ2FyZVN5bmNXb3JraW5nUHJvdG90eXBl";
+            } else {
+                voiceRecordingState = false;
+                button.classList.remove('bg-red-600', 'text-white', 'pulse-animation');
+                button.classList.add('bg-red-50', 'text-red-600');
+                icon.className = "fa-solid fa-check text-lg text-green-600";
+                label.innerText = "Microphone data array processed successfully!";
+            }
+        });
+
+        document.getElementById('mediaInput').addEventListener('change', function(e) {
+            const targetFile = e.target.files[0];
+            if (targetFile) {
+                const readerInstance = new FileReader();
+                readerInstance.onload = function(event) {
+                    visualDumpBase64 = event.target.result;
+                    document.getElementById('uploadStatus').innerText = "Media attached successfully.";
+                };
+                readerInstance.readAsDataURL(targetFile);
+            }
+        });
+
+        function syncQueueDisplayCounter() {
+            const storageStack = JSON.parse(localStorage.getItem('careSync_reports')) || [];
+            document.getElementById('queueCounter').innerText = storageStack.length;
+        }
+
+        document.getElementById('careSyncMainForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('reporterName').value;
+            const phone = document.getElementById('reporterPhone').value;
+            const category = document.getElementById('syndromeType').value;
+            const volume = document.getElementById('clusterCount').value;
+            const coreText = document.getElementById('symptomDetails').value;
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (pos) => {
+                        commitLogPipeline(name, phone, category, volume, coreText, pos.coords.latitude, pos.coords.longitude);
+                    },
+                    () => {
+                        commitLogPipeline(name, phone, category, volume, coreText, 11.1500, 7.6500);
+                    }
+                );
+            } else {
+                commitLogPipeline(name, phone, category, volume, coreText, 11.1500, 7.6500);
+            }
+        });
+
+        function commitLogPipeline(name, phone, cat, vol, text, lat, lng) {
+            const generatedReportObj = {
+                id: 'INCIDENT-NODE-' + Date.now(),
+                reporterName: name,
+                reporterPhone: phone,
+                category: cat,
+                affectedCount: vol,
+                symptoms: text,
+                latitude: lat,
+                longitude: lng,
+                audio: voiceDumpBase64,
+                image: visualDumpBase64 || "https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?auto=format&fit=crop&w=400&q=80",
+                timestamp: new Date().toLocaleString('en-US')
+            };
+
+            const centralReportRegistry = JSON.parse(localStorage.getItem('careSync_reports')) || [];
+            centralReportRegistry.push(generatedReportObj);
+            localStorage.setItem('careSync_reports', JSON.stringify(centralReportRegistry));
+
+            syncQueueDisplayCounter();
+            document.getElementById('careSyncMainForm').reset();
+            document.getElementById('voiceStatusText').innerText = "Press to record verbal audio transmission";
+            document.getElementById('voiceIcon').className = "fa-solid fa-microphone text-lg";
+            voiceDumpBase64 = "";
+            visualDumpBase64 = "";
+
+            document.getElementById('submissionModal').classList.remove('hidden');
+        }
+
+        document.getElementById('modalDismissBtn').addEventListener('click', function() {
+            document.getElementById('submissionModal').classList.add('hidden');
+        });
+
+        function simulateSystemPushAlert() {
+            if (!("Notification" in window)) {
+                alert("Browser stack does not support desktop alerts.");
+                return;
+            }
+            Notification.requestPermission().then(state => {
+                if (state === "granted") {
+                    new Notification("CareSync Active Broadcast", {
+                        body: "New local surveillance warning compiled for your location grid.",
+                        icon: "https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?auto=format&fit=crop&w=80&q=80"
+                    });
+                } else {
+                    alert("Notification channel confirmed: Local surveillance warning compiled for your grid.");
+                }
+            });
+        }
+
+        window.onload = function() {
+            syncQueueDisplayCounter();
+        };
+    </script>
+</body>
+</html>

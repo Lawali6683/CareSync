@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareSync - Rapid Field Response Terminal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col">
+
+    <header class="bg-amber-950/40 border-b border-amber-500/30 sticky top-0 z-40 backdrop-blur-md">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <a href="admin.html" class="w-9 h-9 bg-slate-900 border border-slate-800 hover:border-amber-500/50 rounded-xl flex items-center justify-center text-slate-400 hover:text-amber-400 transition" title="Return to Control Admin">
+                    <i class="fa-solid fa-arrow-left text-sm"></i>
+                </a>
+                <div>
+                    <span class="text-xs uppercase font-bold tracking-widest text-amber-500 block">Field Operations</span>
+                    <span class="text-base font-black text-white tracking-wide">CareSync Rapid Response</span>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2 bg-amber-950/60 border border-amber-500/20 px-3 py-1 rounded-xl">
+                <span class="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></span>
+                <span class="text-[11px] font-bold text-amber-400 uppercase tracking-wider">Tactical Node</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow container mx-auto px-4 py-6 max-w-7xl space-y-6">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="space-y-4">
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-sm font-black uppercase tracking-wider text-amber-500 flex items-center space-x-2">
+                            <i class="fa-solid fa-bell-concierge"></i>
+                            <span>Escalated Incidents</span>
+                        </h2>
+                        <span id="incidentBadgeCount" class="bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold px-2 py-0.5 rounded-full">0</span>
+                    </div>
+                    <div id="escalatedIncidentsContainer" class="space-y-3 max-h-[320px] overflow-y-auto pr-1">
+                    </div>
+                </div>
+
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5">
+                    <h3 class="text-sm font-black uppercase tracking-wider text-slate-300 mb-3 flex items-center space-x-2">
+                        <i class="fa-solid fa-shield-halved text-emerald-500"></i>
+                        <span>Dynamic Safety Vectors</span>
+                    </h3>
+                    <div id="safetyGuidancePanel" class="text-xs space-y-3">
+                        <div class="p-3 bg-slate-950 border border-slate-800 rounded-xl">
+                            <span class="text-slate-400 block font-bold mb-1">Standard Operational Protocol:</span>
+                            Maintain a 3-meter spatial buffer zone from index vectors until dynamic AI barrier evaluation completes.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-2 space-y-6">
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col h-[320px]">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-xs font-black uppercase tracking-wider text-slate-400 flex items-center space-x-2">
+                            <i class="fa-solid fa-earth-africa text-amber-500"></i>
+                            <span>Deployment Intercept Map</span>
+                        </span>
+                        <span id="currentCoordinatesText" class="text-[10px] text-slate-500 font-mono">No target locked</span>
+                    </div>
+                    <div id="operationalMapCanvas" class="w-full flex-grow rounded-xl bg-slate-950 border border-slate-800"></div>
+                </div>
+
+                <div id="fieldResponseAiPanel" class="bg-slate-900 border border-slate-800 rounded-2xl p-5 hidden">
+                    <div class="flex items-center space-x-2 mb-4 border-b border-slate-800 pb-3">
+                        <div class="w-2 h-2 bg-amber-500 rounded-full animate-ping"></div>
+                        <h3 class="text-sm font-black uppercase tracking-wider text-amber-400 flex items-center space-x-1.5">
+                            <i class="fa-solid fa-kit-medical"></i>
+                            <span>Tactical Action Directives</span>
+                        </h3>
+                    </div>
+
+                    <div id="fieldAiLoading" class="hidden text-center py-6">
+                        <i class="fa-solid fa-rotate animate-spin text-xl text-amber-500 mb-2"></i>
+                        <p class="text-xs text-slate-400">Streaming localized contagion mitigation matrices...</p>
+                    </div>
+
+                    <div id="fieldAiBlocks" class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                        <div class="p-4 bg-slate-950 border border-slate-800 rounded-xl">
+                            <div class="flex items-center space-x-1.5 font-bold text-amber-400 mb-2">
+                                <i class="fa-solid fa-virus-covid"></i>
+                                <span>Contagion Profile</span>
+                            </div>
+                            <p id="fieldAiDiagnosis" class="text-slate-300 leading-relaxed"></p>
+                        </div>
+                        <div class="p-4 bg-slate-950 border border-slate-800 rounded-xl">
+                            <div class="flex items-center space-x-1.5 font-bold text-red-400 mb-2">
+                                <i class="fa-solid fa-house-medical-flag"></i>
+                                <span>Containment Measures</span>
+                            </div>
+                            <p id="fieldAiIntervention" class="text-slate-300 leading-relaxed"></p>
+                        </div>
+                        <div class="p-4 bg-slate-950 border border-slate-800 rounded-xl">
+                            <div class="flex items-center space-x-1.5 font-bold text-emerald-400 mb-2">
+                                <i class="fa-solid fa-mask-face"></i>
+                                <span>Required Equipment / PPE</span>
+                            </div>
+                            <p id="fieldAiPpe" class="text-slate-300 leading-relaxed"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+            <h3 class="text-sm font-black uppercase tracking-wider text-slate-300 mb-4 flex items-center space-x-2">
+                <i class="fa-solid fa-clipboard-list text-amber-500"></i>
+                <span>Static Threat Neutralization Protocols</span>
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs">
+                <div class="p-4 bg-slate-950 border-l-4 border-amber-600 rounded-r-xl">
+                    <h4 class="font-bold text-white mb-1">01 / Secure Perimeter</h4>
+                    <p class="text-slate-400">Establish local containment borders around affected households instantly.</p>
+                </div>
+                <div class="p-4 bg-slate-950 border-l-4 border-amber-600 rounded-r-xl">
+                    <h4 class="font-bold text-white mb-1">02 / Vector Isolation</h4>
+                    <p class="text-slate-400">Isolate immediate symptomatic patients to prevent micro-droplet air exchanges.</p>
+                </div>
+                <div class="p-4 bg-slate-950 border-l-4 border-amber-600 rounded-r-xl">
+                    <h4 class="font-bold text-white mb-1">03 / Decontamination</h4>
+                    <p class="text-slate-400">Saturate contact furniture arrays with a 0.5% high-grade chlorine fluid mix.</p>
+                </div>
+                <div class="p-4 bg-slate-950 border-l-4 border-amber-600 rounded-r-xl">
+                    <h4 class="font-bold text-white mb-1">04 / Shield Registry</h4>
+                    <p class="text-slate-400">Document unaffected direct contacts to construct safe operational rings.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-slate-950 border-t border-slate-900 text-slate-500 text-[11px] py-4 mt-8">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2026 CareSync Framework Ecosystem. Restricted Field Deployment Layer.</p>
+        </div>
+    </footer>
+
+    <script src="ubaida.js"></script>
+    <script>
+        let operationalMap = null;
+
+        function initializeFieldMapModule() {
+            operationalMap = L.map('operationalMapCanvas').setView([11.1500, 7.6500], 6);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19
+            }).addTo(operationalMap);
+        }
+
+        function extractEscalatedRegistry() {
+            const dataDump = localStorage.getItem('careSync_escalated');
+            const incidents = dataDump ? JSON.parse(dataDump) : [];
+            
+            document.getElementById('incidentBadgeCount').innerText = incidents.length;
+            const container = document.getElementById('escalatedIncidentsContainer');
+            container.innerHTML = '';
+
+            if (incidents.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-500 text-center py-8">No active operational targets assigned to this field node.</p>`;
+                return;
+            }
+
+            incidents.reverse().forEach(incident => {
+                const card = document.createElement('div');
+                card.className = "p-4 bg-slate-950 border border-slate-800 hover:border-amber-500/40 rounded-xl cursor-pointer transition flex items-start justify-between space-x-3";
+                card.onclick = () => lockTargetDeployment(incident);
+                card.innerHTML = `
+                    <div class="space-y-1">
+                        <span class="text-[10px] font-mono text-amber-500 font-bold">${incident.id}</span>
+                        <h4 class="text-xs font-bold text-white">${incident.reporterName}</h4>
+                        <p class="text-[11px] text-slate-400">${incident.category}</p>
+                    </div>
+                    <span class="text-[10px] text-slate-500 shrink-0">${incident.timestamp.split(',')[0]}</span>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function lockTargetDeployment(incident) {
+            document.getElementById('currentCoordinatesText').innerText = `LAT: ${incident.latitude.toFixed(4)} | LNG: ${incident.longitude.toFixed(4)}`;
+            
+            if (operationalMap) {
+                operationalMap.setView([incident.latitude, incident.longitude], 14);
+                L.marker([incident.latitude, incident.longitude]).addTo(operationalMap)
+                    .bindPopup(`<b class="text-slate-950">TARGET BLOCK</b><br><span class="text-xs text-slate-700">${incident.reporterName}</span>`)
+                    .openPopup();
+            }
+
+            streamOperationalDirectives(incident);
+        }
+
+        async function streamOperationalDirectives(incident) {
+            const panel = document.getElementById('fieldResponseAiPanel');
+            const loading = document.getElementById('fieldAiLoading');
+            const blocks = document.getElementById('fieldAiBlocks');
+
+            panel.classList.remove('hidden');
+            loading.classList.remove('hidden');
+            blocks.classList.add('hidden');
+
+            try {
+                if (typeof askCareSyncAI === 'function') {
+                    const aiText = await askCareSyncAI(incident.symptoms);
+                    parseFieldAiPayload(aiText);
+                } else {
+                    injectFallbackFieldData(incident.category);
+                }
+            } catch (e) {
+                injectFallbackFieldData(incident.category);
+            } finally {
+                loading.classList.add('hidden');
+                blocks.classList.remove('hidden');
+            }
+        }
+
+        function parseFieldAiPayload(text) {
+            const splitLines = text.split('\n');
+            let part1 = '', part2 = '', part3 = '';
+            let parsePointer = 1;
+
+            splitLines.forEach(line => {
+                if (line.includes('1.') || line.toLowerCase().includes('diagnosis')) parsePointer = 1;
+                else if (line.includes('2.') || line.toLowerCase().includes('containment') || line.includes('intervention')) parsePointer = 2;
+                else if (line.includes('3.') || line.toLowerCase().includes('ppe') || line.includes('kayan')) parsePointer = 3;
+
+                if (parsePointer === 1) part1 += line + '<br>';
+                if (parsePointer === 2) part2 += line + '<br>';
+                if (parsePointer === 3) part3 += line + '<br>';
+            });
+
+            document.getElementById('fieldAiDiagnosis').innerHTML = part1 || text;
+            document.getElementById('fieldAiIntervention').innerHTML = part2 || "Establish containment perimeters immediately.";
+            document.getElementById('fieldAiPpe').innerHTML = part3 || "Deploy biohazard filtration safety kits.";
+        }
+
+        function injectFallbackFieldData(category) {
+            document.getElementById('fieldAiDiagnosis').innerHTML = `Suspicious pathogen cluster mapping closely to <b>${category}</b> parameters. Immediate physical verification required.`;
+            document.getElementById('fieldAiIntervention').innerHTML = `Deploy point-of-source blockades. Divert public traffic footprints away from the immediate coordinates.`;
+            document.getElementById('fieldAiPpe').innerHTML = `High risk of cross-contamination. Field crew must enforce absolute N95 face respirators, impermeable outer protection aprons, and eye shields before boundary entry.`;
+        }
+
+        window.onload = function() {
+            initializeFieldMapModule();
+            extractEscalatedRegistry();
+            window.addEventListener('storage', extractEscalatedRegistry);
+        };
+    </script>
+</body>
+</html>
